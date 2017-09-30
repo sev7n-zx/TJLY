@@ -29,12 +29,8 @@
 
 
 <div class="logintop">    
-    <span>欢迎登录后台管理界面平台</span>    
-    <ul>
-    <li><a href="#">回首页</a></li>
-    <li><a href="#">帮助</a></li>
-    <li><a href="#">关于</a></li>
-    </ul>    
+    <span>欢迎登录天津河北区楼宇经济后台管理系统</span>    
+ 
     </div>
     
     <div class="loginbody">
@@ -44,18 +40,33 @@
     <div class="loginbox">
     
     <ul>
-    <li><input name="" type="text" class="loginuser" value="admin" onclick="JavaScript:this.value=''"/></li>
-    <li><input name="" type="text" class="loginpwd" value="密码" onclick="JavaScript:this.value=''"/></li>
-    <li><input name="" type="button" class="loginbtn" value="登录"  onclick="javascript:window.location='main.html'"  /><label><input name="" type="checkbox" value="" checked="checked" />记住密码</label><label><a href="#">忘记密码？</a></label></li>
+    <li><input name="" type="text" class="loginuser" onclick="JavaScript:this.value=''"/></li>
+    <li><input name="" type="password" class="loginpwd" onclick="JavaScript:this.value=''"/></li>
+     <li><select id="type" style="font-size:14px;width:150px;height:36px;border:1px solid #90a2bc;float:left;margin-right:70px;text-align:center;">
+     	<option value="2">楼宇办用户</option>
+     	<option value="1">楼宇运营用户</option>
+     </select></li>
+    <li><input name="" type="button" class="loginbtn" value="登录"  /></li>
     </ul>
     
     
     </div>
     
     </div>
-    
-    
-    
-    <div class="loginbm">版权所有  2013  .com 仅供学习交流，勿用于任何商业用途</div>
 </body>
+
+<script>
+$(".loginbtn").click(function() {
+	$.get("../user/login", {
+		username : $(".loginuser").val(),
+		password : $(".loginpwd").val(),
+		type : $("#type").val()
+	}, function(json) {
+		if(json)
+			window.location="main.html";
+		else
+			alert("您输入的用户名或者密码有误，请重新输入。");
+	});
+});
+</script>
 </html>
