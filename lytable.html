@@ -21,7 +21,7 @@
 		<span>位置：</span>
 		<ul class="placeul">
 			<li><a href="#">基础信息管理</a></li>
-			<li><a href="#">楼宇基础信息管理</a></li>
+			<li><a href="#">商务楼宇基础信息管理</a></li>
 		</ul>
 	</div>
 
@@ -83,10 +83,13 @@
 					style="text-decoration: none;" id="del"><span><img
 							src="images/t03.png" /></span>删除</a></li>
 				<li class="click"><a href="javascript:void(0)"
-					style="text-decoration: none;" id="exp"><span><img
-							src="images/f03.png" /></span>模版导出</a></li>
+					style="text-decoration: none;" id="import"><span><img
+							src="images/f03.png" /></span>Excel导入</a></li>
+				<li class="click"><a href="javascript:void(0)"
+					style="text-decoration: none;" id="export"><span><img
+							src="images/f03.png" /></span>Excel导出</a></li>
+				
 			</ul>
-			<br>
 		</div>
 
 		<div>
@@ -98,8 +101,8 @@
 			<div id="pg" style="text-align: right;"></div>
 		</div>
 
-		<div class="tip" style="width:600px;height:500px;">
-			<div class="tiptop">
+		<div class="tip" id="imgtip" style="width:600px;height:500px;">
+			<div class="tiptop" id="imgtiptop">
 				<span>上传图片</span><a></a>
 			</div>
 
@@ -114,6 +117,23 @@
 			</div>
 
 		</div>
+		
+		<div class="tip" id="exceltip" style="width:500px;height:300px;">
+			<div class="tiptop" id="exceltiptop">
+				<span>导入商务楼宇基础信息</span><a></a>
+			</div>
+
+			<div class="tipinfo" style="width:400px;height:400px;">
+				<input id="excelfile" type="file"/>
+			</div>
+
+			<div class="tipbtn" style="margin-top:-350px;padding-left:60px;">
+				<input id="excelsureBtn" type="button" class="btn" value="确定" />&nbsp; <input
+					name="" type="button" class="btn" value="取消" onclick="excelcancel()" />
+			</div>
+
+		</div>
+		
 </body>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/ajaxfileupload.js"></script>
@@ -202,7 +222,7 @@
 			alert("请选择需要上传图片的记录");
 			return;
 		} else {
-			$('.tip').show();
+			$('#imgtip').show();
 			$.get("../build_base/img_get", {
 				buildid : rows[0].id,
 				type:1
@@ -247,10 +267,40 @@
 		}
 	});
 
-	$("#exp").click(function() {
+	$("#export").click(function() {
+		var name= $("#s_name").val();
+		var type= $("#s_type").val();
+		var classValue= $("#s_class").val();
+		var right= $("#s_right").val();
+		var js = document.scripts;
+		//js[js.length - 1] 就是当前的js文件的路径
+		js = js[js.length - 1].src.substring(0, js[js.length - 1].src.lastIndexOf("/") + 1);
+		//输出当前js文件所在的目录
+		console.log(js);
+		location.href="../build_imExport/exportbasic?name="+name+"&type="+type+"&classValue="+classValue+"&right="+right;
+		/* var name= $("#s_name").val();
+		var type= $("#s_type").val();
+		var classValue= $("#s_class").val();
+		var right= $("#s_right").val();
+		$.ajax({ 
+			url : "../build_imExport/exportbasic", 
+			type : 'GET', 
+			data : {name:name,type:type,classValue:classValue,right:right}, 
+			success : function(data) { 
+				 window.location.herf="../build_imExport/exportbasic" ;
+			
+			}, 
+			error : function(responseStr) { 
+			console.log("error");
+			} 
+			}); */
 
 	});
 
+	$("#import").click(function() {
+		$('#exceltip').show();
+	});
+	
 	function search() {
 		mmg.load({
 			name : $("#s_name").val(),
@@ -260,13 +310,21 @@
 		});
 	}
 	
-	$('.tiptop a').click(function() {
+	$('#imgtiptop a').click(function() {
 		cancel();
 	});
+	$('#exceltiptop a').click(function() {
+		excelcancel();
+	});
 	function cancel() {
-		$('.tip').hide();
+		$('#imgtip').hide();
 		$('#preview').empty();
 	}
+	
+	function excelcancel() {
+		$('#exceltip').hide();
+	}
+	
 	
 	$('#sureBtn').click(function(){
 		var rows = mmg.selectedRows();
@@ -291,6 +349,24 @@
 		});
 	});
 
+	$('#excelsureBtn').click(function(){
+		var arrId = [];
+		arrId[0] = 'excelfile';
+		$.ajaxFileUpload({
+			url : "../build_imExport/uploadbasic",
+			secureuri : false,
+			dataType : 'json',
+			fileElementId : arrId,
+			success : function(msg) {
+				alert("excel导入成功！");
+				cancel();
+			},
+			error : function(msg) {
+				alert("导入失败!");
+			}
+		});
+	});
+	
 	function preview(file) {
 	    var prevDiv = document.getElementById('preview');
 	    if (file.files && file.files[0]) {

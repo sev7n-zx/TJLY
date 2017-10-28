@@ -12,8 +12,8 @@
 	<div class="place">
 		<span>位置：</span>
 		<ul class="placeul">
-			<li><a href="#">配置管理</a></li>
-			<li><a href="#">楼宇运行单位管理</a></li>
+			<li><a href="#">基础信息管理</a></li>
+			<li><a href="#">楼宇运营单位基础信息管理</a></li>
 		</ul>
 	</div>
 
@@ -30,7 +30,7 @@
 					<input type="hidden" id="editid"></input>
 					<li><label>单位名称<b>*</b></label><input id="unitname" type="text"
 						class="dfinput" style="width: 300px" maxlength="50"/></li>
-					<li><label>单位地址</label><input id="address" type="text"
+					<li><label>负责人</label><input id="dutyman" type="text"
 						class="dfinput" style="width: 300px" maxlength="200"/></li>
 					<li><label>联系人</label><input id="touchman" type="text"
 						class="dfinput" style="width: 300px" maxlength="20"/></li>
@@ -62,7 +62,7 @@
 		}, function(json) {
 			$('#editid').prop('value', json.data[0].id);
 			$('#unitname').prop('value', json.data[0].unitname);
-			$('#address').prop('value', json.data[0].address);
+			$('#dutyman').prop('value', json.data[0].dutyman);
 			$('#touchman').prop('value', json.data[0].touchman);
 			$('#telphone').prop('value', json.data[0].telphone);
 		});
@@ -72,8 +72,9 @@
 		if (id == null || id == "") {
 			$.post("../rununit/add", {
 				unitname : $("#unitname").val(),
-				address : $("#address").val(),
+				address : '',
 				touchman : $("#touchman").val(),
+				dutyman : $("#dutyman").val(),
 				telphone : $("#telphone").val()
 			}, function(json) {
 				if (json) {
@@ -86,8 +87,9 @@
 			$.post("../rununit/edit", {
 				id : id,
 				unitname : $("#unitname").val(),
-				address : $("#address").val(),
+				address : '',
 				touchman : $("#touchman").val(),
+				dutyman : $("#dutyman").val(),
 				telphone : $("#telphone").val()
 			}, function(json) {
 				if (json) {

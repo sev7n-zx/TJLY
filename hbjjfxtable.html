@@ -12,6 +12,7 @@
 			<link rel="stylesheet" href="js/mmgrid/mmPaginator.css">
 				<link rel="stylesheet"
 					href="js/mmgrid/theme/bootstrap/mmPaginator-bootstrap.css">
+					<link rel="stylesheet" href="css/jquery.monthpicker.css">
 </head>
 
 
@@ -20,8 +21,8 @@
 	<div class="place">
 		<span>位置：</span>
 		<ul class="placeul">
-			<li><a href="#">报表统计</a></li>
-			<li><a href="#">全区经济效益</a></li>
+			<li><a href="#">经济数据分析</a></li>
+			<li><a href="#">商务楼宇整体经济效益</a></li>
 		</ul>
 	</div>
 
@@ -30,8 +31,8 @@
 		<ul class="seachform">
 
 			<li style="width: 400px;"><label>统计年月</label><input
-				id="s_countdate" type="text" class="scinput" style="width:100px;" /></li>
-			
+				id="s_countdate" type="text" class="scinput" style="width: 100px;" /></li>
+
 			<li style="float: right;"><label>&nbsp;</label><input name=""
 				type="button" class="btn btn-info" value="查询" onclick="search()" /></li>
 
@@ -46,20 +47,24 @@
 			</table>
 			<div id="pg" style="text-align: right;"></div>
 		</div>
-
 </body>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script src="js/mmgrid/mmGrid.js"></script>
 <script src="js/mmgrid/mmPaginator.js"></script>
-
+<script src="js/jquery.monthpicker.js"></script>
 <script>
+	$('#s_countdate').monthpicker({
+		years : [ 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025 ],
+		topOffset : 6
+	})
+
 	var fixed2 = function(val) {
 		if (typeof val != 'number') {
 			return '';
 		}
 		return val.toFixed(2);
 	}
-	var cols = [{
+	var cols = [ {
 		title : '统计年月',
 		name : 'countdate',
 		width : 100,
@@ -67,7 +72,7 @@
 		sortable : false,
 		type : 'number'
 	}, {
-		title : '楼宇经济纳税贡献率',
+		title : '商务楼宇经济纳税贡献率',
 		name : 'taxrate',
 		width : 100,
 		align : 'center',
@@ -81,7 +86,7 @@
 		sortable : false,
 		type : 'number'
 	}, {
-		title : '楼宇经济营收贡献率',
+		title : '商务楼宇经济营收贡献率',
 		name : 'incomerate',
 		width : 60,
 		align : 'center',
@@ -95,7 +100,7 @@
 		sortable : true,
 		type : 'number'
 	}, {
-		title : '楼宇经济就业贡献率',
+		title : '商务楼宇经济就业贡献率',
 		name : 'workmanrate',
 		width : 30,
 		align : 'center',
@@ -109,20 +114,20 @@
 		sortable : false,
 		type : 'number'
 	}, {
-		title : '楼宇经济水平排名',
+		title : '商务楼宇经济水平排名',
 		name : 'rank',
 		width : 100,
 		align : 'center',
 		sortable : false,
 		type : 'number'
-	}];
+	} ];
 
 	var mmg = $('.mmg').mmGrid({
 		height : 473,
 		width : '99%',
 		indexCol : false,
 		cols : cols,
-		url: '../month_count/tjhb_benefit',
+		url : '../month_count/tjhb_benefit',
 		method : 'get',
 		root : 'data',
 		multiSelect : false,
@@ -132,8 +137,6 @@
 		plugins : [ $('#pg').mmPaginator({}) ]
 	});
 
-	
-	
 	function search() {
 		mmg.load({
 			countdate : $("#s_countdate").val()

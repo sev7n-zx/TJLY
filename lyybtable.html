@@ -12,6 +12,7 @@
 			<link rel="stylesheet" href="js/mmgrid/mmPaginator.css">
 				<link rel="stylesheet"
 					href="js/mmgrid/theme/bootstrap/mmPaginator-bootstrap.css">
+					<link rel="stylesheet" href="css/jquery.monthpicker.css">
 </head>
 
 
@@ -20,8 +21,8 @@
 	<div class="place">
 		<span>位置：</span>
 		<ul class="placeul">
-			<li><a href="#">经济数据</a></li>
-			<li><a href="#">楼宇月报</a></li>
+			<li><a href="#">数据汇总</a></li>
+			<li><a href="#">楼宇运营单位数据汇总</a></li>
 		</ul>
 	</div>
 
@@ -87,8 +88,12 @@
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script src="js/mmgrid/mmGrid.js"></script>
 <script src="js/mmgrid/mmPaginator.js"></script>
-
+<script src="js/jquery.monthpicker.js"></script>
 <script>
+	$('#s_reportdate').monthpicker({
+		years : [ 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025 ],
+		topOffset : 6
+	})
 	var fixed2 = function(val) {
 		if (typeof val != 'number') {
 			return '';
